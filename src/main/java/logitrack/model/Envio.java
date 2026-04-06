@@ -9,6 +9,7 @@ public class Envio {
     private String destinatario;
     private String origen;
     private String destino;
+    private String prioridad;
     private String estadoActual;
     private LocalDateTime fechaCreacion;
 
@@ -33,4 +34,11 @@ public class Envio {
 
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+    public String getPrioridad() {
+    return prioridad;
+}
+
+public void setPrioridad(String prioridad) {
+    this.prioridad = prioridad;
+}
 }

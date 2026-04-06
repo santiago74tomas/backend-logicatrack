@@ -4,23 +4,50 @@ import logitrack.model.Envio;
 import logitrack.model.EstadoEnvio;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
-
+import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.*;
+
 
 @Service
 public class EnvioService {
 
+private String obtenerPrioridadML(Envio envio) {
+    try {
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = "https://ml-service-production-cd6f.up.railway.app/priorizar";
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("distancia_km", 100); // mock por ahora
+        request.put("tipo_envio", "normal"); // podrías mapearlo después
+        request.put("ventana_horaria", "mañana");
+        request.put("fragil", 0);
+        request.put("frio", 0);
+        request.put("saturacion_ruta", 0.5);
+
+        Map response = restTemplate.postForObject(url, request, Map.class);
+
+        return response.get("prioridad").toString();
+
+    } catch (Exception e) {
+        return "MEDIA"; // fallback si falla el ML
+    }
+}
     private List<Envio> envios = new ArrayList<>();
 
-    public Envio crearEnvio(Envio envio) {
-        envio.setTrackingId(UUID.randomUUID().toString());
-        envio.setEstadoActual(EstadoEnvio.CREADO.name());
-        envio.setFechaCreacion(LocalDateTime.now());
+ public Envio crearEnvio(Envio envio) {
+    envio.setTrackingId(UUID.randomUUID().toString());
+    envio.setEstadoActual(EstadoEnvio.CREADO.name());
+    envio.setFechaCreacion(LocalDateTime.now());
 
-        envios.add(envio);
-        return envio;
-    }
+    // 🔥 NUEVO
+    String prioridad = obtenerPrioridadML(envio);
+    envio.setPrioridad(prioridad); // necesitás este campo en el modelo
+
+    envios.add(envio);
+    return envio;
+}
 
     public List<Envio> listarEnvios() {
         return envios;
