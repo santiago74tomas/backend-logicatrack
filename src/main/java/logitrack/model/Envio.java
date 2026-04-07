@@ -12,6 +12,13 @@ public class Envio {
     private String prioridad;
     private String estadoActual;
     private LocalDateTime fechaCreacion;
+    private double distanciaKm;
+private String tipoEnvio;
+private String ventanaHoraria;
+private double volumen;
+private boolean fragil;
+private boolean frio;
+private double saturacionRuta;
 
     // Getters y Setters
     public String getTrackingId() { return trackingId; }
@@ -36,6 +43,61 @@ public class Envio {
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
     public String getPrioridad() {
     return prioridad;
+}
+public double getDistanciaKm() {
+    return distanciaKm;
+}
+
+public void setDistanciaKm(double distanciaKm) {
+    this.distanciaKm = distanciaKm;
+}
+
+public String getTipoEnvio() {
+    return tipoEnvio;
+}
+
+public void setTipoEnvio(String tipoEnvio) {
+    this.tipoEnvio = tipoEnvio;
+}
+
+public String getVentanaHoraria() {
+    return ventanaHoraria;
+}
+
+public void setVentanaHoraria(String ventanaHoraria) {
+    this.ventanaHoraria = ventanaHoraria;
+}
+
+public double getVolumen() {
+    return volumen;
+}
+
+public void setVolumen(double volumen) {
+    this.volumen = volumen;
+}
+
+public boolean isFragil() {
+    return fragil;
+}
+
+public void setFragil(boolean fragil) {
+    this.fragil = fragil;
+}
+
+public boolean isFrio() {
+    return frio;
+}
+
+public void setFrio(boolean frio) {
+    this.frio = frio;
+}
+
+public double getSaturacionRuta() {
+    return saturacionRuta;
+}
+
+public void setSaturacionRuta(double saturacionRuta) {
+    this.saturacionRuta = saturacionRuta;
 }
 
 public void setPrioridad(String prioridad) {

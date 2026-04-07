@@ -19,31 +19,30 @@ private String obtenerPrioridadML(Envio envio) {
         String url = "https://ml-service-production-cd6f.up.railway.app/priorizar";
 
         Map<String, Object> request = new HashMap<>();
-        request.put("distancia_km", 100); // mock por ahora
-        request.put("tipo_envio", "normal"); // podrías mapearlo después
-        request.put("ventana_horaria", "mañana");
-        request.put("fragil", 0);
-        request.put("frio", 0);
-        request.put("saturacion_ruta", 0.5);
+        request.put("distancia_km", envio.getDistanciaKm());
+        request.put("tipo_envio", envio.getTipoEnvio());
+        request.put("ventana_horaria", envio.getVentanaHoraria());
+        request.put("fragil", envio.isFragil() ? 1 : 0);
+        request.put("frio", envio.isFrio() ? 1 : 0);
+        request.put("saturacion_ruta", envio.getSaturacionRuta());
 
         Map response = restTemplate.postForObject(url, request, Map.class);
 
         return response.get("prioridad").toString();
 
     } catch (Exception e) {
-        return "MEDIA"; // fallback si falla el ML
+        return "MEDIA"; // fallback
     }
 }
     private List<Envio> envios = new ArrayList<>();
 
- public Envio crearEnvio(Envio envio) {
+public Envio crearEnvio(Envio envio) {
     envio.setTrackingId(UUID.randomUUID().toString());
     envio.setEstadoActual(EstadoEnvio.CREADO.name());
     envio.setFechaCreacion(LocalDateTime.now());
 
-    // 🔥 NUEVO
     String prioridad = obtenerPrioridadML(envio);
-    envio.setPrioridad(prioridad); // necesitás este campo en el modelo
+    envio.setPrioridad(prioridad);
 
     envios.add(envio);
     return envio;
